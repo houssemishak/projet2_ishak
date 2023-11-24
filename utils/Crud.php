@@ -5,7 +5,7 @@ class Crud
     public function __construct()
     {
         $host = "localhost";
-        $db = "tp_1";
+        $db = "ecom2_project";
         $user = "root";
         $password = "";
 
