@@ -1,7 +1,6 @@
 <?php
-// controllers/AuthController.php
 
-require_once('utils/Crud.php');
+require_once('models/Crud.php');
 
 class AuthController extends Crud {
     public function __construct() {

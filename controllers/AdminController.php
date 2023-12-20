@@ -50,8 +50,6 @@ class AdminController {
         } else {
             $errorMessage = 'Erreur lors de la mise à niveau du rôle de l\'utilisateur';
         }
-
-        // Vous pouvez également charger une vue spécifique si nécessaire
     }
 
     public function deleteUser($userId) {
@@ -66,31 +64,27 @@ class AdminController {
             $errorMessage = 'Erreur lors de la suppression de l\'utilisateur';
         }
 
-        // Vous pouvez également charger une vue spécifique si nécessaire
     }
 
-    // Méthodes pour gérer l'administration des produits et des utilisateurs
-    private function addProductToDatabase($productName, $productPrice, $productCategory) {
-        // Logique pour ajouter le produit dans la base de données
-        // Retourne un objet Product si l'ajout réussit, sinon retourne null
-        // ...
-    }
 
-    private function getAllUsers() {
-        // Logique pour récupérer tous les utilisateurs depuis la base de données
-        // Retourne un tableau d'objets User
-        // ...
-    }
+private function addProductToDatabase($productName, $productPrice, $productCategory) {
+    $product = new Product();
+    return $product->add($productName, $productPrice, $productCategory);
+}
 
-    private function upgradeUserToAdmin($userId) {
-        // Logique pour améliorer le rôle de l'utilisateur à administrateur
-        // Retourne true si la mise à niveau réussit, sinon retourne false
-        // ...
-    }
+private function getAllUsers() {
+    $user = new User();
+    return $user->getAll();
+}
 
-    private function deleteUserFromDatabase($userId) {
-        // Logique pour supprimer un utilisateur de la base de données
-        // Retourne true si la suppression réussit, sinon retourne false
-        // ...
-    }
+private function upgradeUserToAdmin($userId) {
+    $user = new User();
+    return $user->upgradeToAdmin($userId);
+}
+
+private function deleteUserFromDatabase($userId) {
+    $user = new User();
+    return $user->delete($userId);
+}
+
 }
