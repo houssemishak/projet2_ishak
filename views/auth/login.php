@@ -64,25 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <form action="login.php" method="post">
-        <h2>Connexion</h2>
-        <?php
-        // Afficher des messages d'erreur s'il y en a
-        if (isset($errors) && !empty($errors)) {
-            echo '<div style="color: red;">';
-            foreach ($errors as $error) {
-                echo $error . '<br>';
-            }
-            echo '</div>';
-        }
-        ?>
-        <label for="username">Nom d'utilisateur:</label>
-        <input type="text" id="username" name="username" required>
+<form action="index.php?action=login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
 
-        <label for="password">Mot de passe:</label>
-        <input type="password" id="password" name="password" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
 
-        <input type="submit" value="Se connecter">
+        <button type="submit">Login</button>
     </form>
+
 </body>
+
 </html>

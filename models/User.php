@@ -1,70 +1,65 @@
 <?php
 
-require_once('Crud.php');
+require_once 'Crud.php';
 
-class User extends Crud {
-    private $id;
-    private $username;
-    private $password;
-    private $firstName;
-    private $lastName;
-    private $address;
-
-    public function __construct($id = null, $username = "", $password = "", $firstName = "", $lastName = "", $address = "") {
+class User extends Crud
+{
+    public function __construct()
+    {
         parent::__construct();
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->address = $address;
     }
 
-    // Getters
-    public function getId() {
-        return $this->id;
+    // Fonction pour enregistrer un nouvel utilisateur
+    public function registerUser($email, $username, $fname, $lname, $pwd)
+    {
+
+
+        // Validation de l'email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // Gérer l'erreur d'email invalide
+            return false;
+        }
+
+        // Vérification de la non-existence de l'email et du nom d'utilisateur
+        if ($this->getUserByEmail($email) || $this->getUserByUsername($username)) {
+            // L'email ou le nom d'utilisateur existe déjà
+            return false;
+        }
+
+        // Hachage du mot de passe
+        $hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
+
+        // Génération d'un token sécurisé
+        $token = bin2hex(random_bytes(16));
+
+        // Ajout de l'utilisateur à la base de données
+        $userId = $this->add('user', [
+            'email' => $email,
+            'token' => $token,
+
+            'username' => $username,
+            'fname' => $fname,
+            'lname' => $lname,
+            'pwd' => $hashedPassword,
+            'billing_address_id' => 1,
+            'shipping_address_id' => 1,
+            'role_id' => 3
+        ]);
+
+        return $userId;
     }
 
-    public function getUsername() {
-        return $this->username;
+    // Fonction pour récupérer un utilisateur par son nom d'utilisateur
+    public function getUserByUsername($username)
+    {
+        return $this->getOneByField('user', 'username', $username);
     }
 
-    public function getPassword() {
-        return $this->password;
+    // Fonction pour récupérer un utilisateur par son email
+    private function getUserByEmail($email)
+    {
+        return $this->getOneByField('user', 'email', $email);
     }
 
-    public function getFirstName() {
-        return $this->firstName;
-    }
-
-    public function getLastName() {
-        return $this->lastName;
-    }
-
-    public function getAddress() {
-        return $this->address;
-    }
-
-    // Setters
-    public function setUsername($username) {
-        $this->username = $username;
-    }
-
-    public function setPassword($password) {
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
-    }
-
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
-    }
-
-    public function setAddress($address) {
-        $this->address = $address;
-    }
-
+    
 }
-?>

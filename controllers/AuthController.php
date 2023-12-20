@@ -1,67 +1,67 @@
 <?php
 
-require_once('models/Crud.php');
+require_once './models/User.php';
 
-class AuthController extends Crud {
-    public function __construct() {
-        parent::__construct();
+class AuthController
+{
+    public function register()
+    {
+        $authModel = new User();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $newUsername = $_POST['username'];
+            $newPassword = $_POST['password'];
+            $newFirstName = $_POST['first_name'];
+            $newLastName = $_POST['last_name'];
+            $newEmail = $_POST['email'];
+
+
+            $newToken = bin2hex(random_bytes(32));
+            $existingUser = $authModel->getUserByUsername($newUsername);
+
+            if (!$existingUser) {
+                $userId = $authModel->registerUser(
+                    $newEmail,
+                    $newUsername,
+                    $newFirstName,
+                    $newLastName,
+                    $newPassword
+                );
+
+                if ($userId) {
+                    echo "Utilisateur enregistré avec succès!";
+                } else {
+                    echo "Erreur lors de l'enregistrement de l'utilisateur.";
+                }
+            } else {
+                echo "Ce nom d'utilisateur est déjà utilisé. Choisissez un autre.";
+            }
+        }
     }
 
-    public function login() {
+    public function login()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authModel = new AuthModel();
+
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $user = $this->getByUsername($username);
+            $user = $authModel->getUserByUsername($username);
 
-            if ($user && password_verify($password, $user['password'])) {
-                $this->startSession($user);
-                header('Location: home.php');
+            if ($user && password_verify($password, $user['pwd'])) {
+                header('Location: ./Views/pages/produits.php');
+
                 exit();
             } else {
-                header('Location: login.php?error=1');
+                echo 'pas correct';
+                //header('Location: login.php?error=1');
                 exit();
             }
         }
     }
 
-    public function register() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $newUsername = $_POST['new_username'];
-            $newPassword = $_POST['new_password'];
-
-            // Hash du mot de passe avant de l'ajouter à la base de données
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            $userId = $this->add('INSERT INTO users (username, password) VALUES (:username, :password)', [
-                'username' => $newUsername,
-                'password' => $hashedPassword
-            ]);
-
-            if ($userId) {
-                $user = $this->getById('users', $userId);
-                $this->startSession($user);
-                header('Location: home.php');
-                exit();
-            } else {
-                header('Location: register.php?error=1');
-                exit();
-            }
-        }
-    }
-
-    public function logout() {
-        session_start();
-        session_unset();
-        session_destroy();
-        header('Location: login.php');
-        exit();
-    }
-
-    private function startSession($user) {
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
+    public function logout()
+    {
     }
 }
-?>
