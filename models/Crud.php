@@ -14,7 +14,7 @@ class Crud
         try {
             $this->connexion = new PDO($dsn, $user, $password);
             if ($this->connexion) {
-                //echo "Connected to the $db database successfully";
+                echo "Connected to the $db database successfully";
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
