@@ -1,6 +1,6 @@
 
 <?php
-require_once('../utils/Crud.php');
+require_once('Crud.php');
 
 class Product extends Crud {
     // Propriétés spécifiques aux produits

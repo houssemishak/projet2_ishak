@@ -74,6 +74,7 @@ class PageController
     public function products()
     {
         // Logique pour la page du tableau de bord
+        require_once('./views/pages/products.php');
         echo "Page products";
     }
 

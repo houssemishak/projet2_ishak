@@ -1,20 +1,3 @@
-<?php
-
-// Inclure les fichiers nécessaires
-require_once 'models/User.php';
-require_once 'controllers/AuthController.php';
-
-// Instancier le contrôleur d'authentification
-$authController = new AuthController();
-
-// Vérifier si le formulaire a été soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Appeler la méthode de connexion du contrôleur d'authentification
-    $authController->login();
-}
-
-// Afficher le formulaire de connexion
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,15 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-<form action="index.php?action=login" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
+<form action="login" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
 
-        <button type="submit">Login</button>
-    </form>
+    <button type="submit">Login</button>
+</form>
+
 
 </body>
 

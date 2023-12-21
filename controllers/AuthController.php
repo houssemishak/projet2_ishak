@@ -40,26 +40,27 @@ class AuthController
     }
 
     public function login()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $authModel = new AuthModel();
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $authModel = new User();
 
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
-            $user = $authModel->getUserByUsername($username);
+        $user = $authModel->getUserByUsername($username);
 
-            if ($user && password_verify($password, $user['pwd'])) {
-                header('Location: ./Views/pages/produits.php');
+        var_dump($user); // Débogage pour voir les données de l'utilisateur
 
-                exit();
-            } else {
-                echo 'pas correct';
-                //header('Location: login.php?error=1');
-                exit();
-            }
+        if ($user && password_verify($password, $user['pwd'])) {
+            header('Location: views/pages/produits.php');
+            exit();
+        } else {
+            echo 'Nom d\'utilisateur ou mot de passe incorrect.';
+            exit();
         }
     }
+}
+
 
     public function logout()
     {
